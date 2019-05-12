@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Scott Moss <willscottmoss@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "build": "babel src --out-dir dist",
     "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles  --silent",
