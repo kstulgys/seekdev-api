@@ -176,12 +176,13 @@ app.post('/api/favorite', (req, res) => {
 
 // // FALLBACK
 // app.get('/*', (req, res) => res.redirect(WEBSITE));
+const port = process.env.PORT || 3000
 
 export const start = async () => {
   try {
     await connect()
-    app.listen(config.port, () => {
-      console.log(`REST API on http://localhost:${config.port}/api`)
+    app.listen(port, () => {
+      console.log(`REST API on http://localhost:${port}/api`)
     })
   } catch (e) {
     console.error(e)
