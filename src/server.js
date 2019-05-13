@@ -3,60 +3,61 @@ import { json, urlencoded } from 'body-parser'
 import morgan from 'morgan'
 import config from './config'
 import cors from 'cors'
-import session from 'express-session'
+// import session from 'express-session'
 // TODO: add a real database
-import JOBS from './resources/data/jobs'
-import USERS from './resources/data/users'
+// import JOBS from './resources/data/jobs'
+// import USERS from './resources/data/users'
 // routes
+// import favoriteRouter from './resources/favorite/favorite.router'
 import jobRouter from './resources/job/job.router'
-import favoriteRouter from './resources/favorite/favorite.router'
-// import userRouter from './resources/user/user.router'
+import userRouter from './resources/user/user.router'
 // import itemRouter from './resources/item/item.router'
 // import listRouter from './resources/list/list.router'
 // auth
-import { signup, signin, signout } from './utils/auth'
+import { signup, signin, protect } from './utils/auth'
 // connect mongoDB
 import { connect } from './utils/db'
 
 export const app = express()
 
-app.disable('x-powered-by')
-app.use(session({
-  name: 'sid',
-  resave: false,
-  saveUninitialized: false,
-  secret: 'learneverything',
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 2,
-    sameSite: true,
-    secure: false
-  }
-}))
+// app.disable('x-powered-by')
+// app.use(session({
+//   name: 'sid',
+//   resave: false,
+//   saveUninitialized: false,
+//   secret: 'learneverything',
+//   cookie: {
+//     maxAge: 1000 * 60 * 60 * 2,
+//     sameSite: true,
+//     secure: false
+//   }
+// }))
 app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-// app.post('/signup', signup)
-// app.post('/signin', signin)
+app.post('/signup', signup)
+app.post('/signin', signin)
 
 // app.use('/api', protect)
-// app.use('/api/user', userRouter)
+app.use('/api/job', jobRouter)
+app.use('/api/user', userRouter)
+
 // app.use('/api/item', itemRouter)
 // app.use('/api/list', listRouter)
 
-app.use((req, res, next) => {
-  const { userId } = req.session
-  if (userId) {
-    res.locals.user = USERS.find(user => user.id === userId)
-  }
-  next()
-})
-app.post('/signup', signup)
-app.post('/signin', signin)
-app.post('/signout', signout)
-app.use('/api/job', jobRouter)
-app.use('/api/favorite', favoriteRouter)
+// app.use((req, res, next) => {
+//   const { userId } = req.session
+//   if (userId) {
+//     res.locals.user = USERS.find(user => user.id === userId)
+//   }
+//   next()
+// })
+// app.post('/signup', signup)
+// app.post('/signin', signin)
+// app.post('/signout', signout)
+// app.use('/favorite', favoriteRouter)
 
 // // FALLBACK
 // app.get('/*', (req, res) => res.redirect(WEBSITE));
