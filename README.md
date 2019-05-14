@@ -1,5 +1,5 @@
 
-# seekify-api
+# seekdev-api
 
 REST job search API build with node, express and mongoDB
 
